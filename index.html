@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Quarto</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="app-header">
+  <h1>QUARTO</h1>
+  <p class="subtitle">4 en ligne, en partageant un attribut</p>
+</header>
+
+<main>
+  <!-- ============================== SETUP SCREEN ============================== -->
+  <section id="setup-screen" class="screen">
+    <p class="intro">Deux joueurs sur le même écran, ou vous contre une IA qui réfléchit
+      avec Monte Carlo Tree Search -- à vous de choisir.</p>
+
+    <div class="card setup-card">
+      <p class="section-label">MODE</p>
+      <div class="segmented" id="mode-toggle">
+        <button class="segment active" data-value="two_players" type="button">Deux joueurs</button>
+        <button class="segment" data-value="computer" type="button">Contre l'ordinateur</button>
+      </div>
+
+      <div id="computer-options">
+        <p class="section-label">DIFFICULTÉ</p>
+        <select id="difficulty-select">
+          <option value="Easy">Facile</option>
+          <option value="Medium" selected>Moyen</option>
+          <option value="Hard">Difficile</option>
+          <option value="Expert">Expert</option>
+        </select>
+
+        <p class="section-label">QUI COMMENCE</p>
+        <div class="segmented" id="first-toggle">
+          <button class="segment active" data-value="human" type="button">Moi</button>
+          <button class="segment" data-value="computer" type="button">Ordinateur</button>
+        </div>
+      </div>
+    </div>
+
+    <button id="start-btn" class="btn btn-accent" type="button">Commencer</button>
+  </section>
+
+  <!-- ============================== GAME SCREEN ============================== -->
+  <section id="game-screen" class="screen hidden">
+    <div class="status-row">
+      <div id="status-badge" class="status-badge"></div>
+      <button id="info-btn" class="info-btn" type="button" aria-label="Comment lire une pièce">i</button>
+    </div>
+
+    <div class="game-body">
+      <canvas id="board-canvas" class="board-canvas"></canvas>
+
+      <div class="side-panel">
+        <p class="section-label">PIÈCE À POSER</p>
+        <div class="card hand-card">
+          <canvas id="hand-canvas"></canvas>
+        </div>
+
+        <p class="section-label">PIÈCES RESTANTES</p>
+        <p class="hint">(cliquez pour la donner à l'adversaire)</p>
+        <canvas id="pool-canvas" class="pool-canvas"></canvas>
+
+        <p id="think-label" class="hint think"></p>
+
+        <button id="new-game-btn" class="btn btn-dark" type="button">Nouvelle partie</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<dialog id="legend-dialog">
+  <p class="section-label">COMMENT LIRE UNE PIÈCE</p>
+  <canvas id="legend-canvas"></canvas>
+  <button id="legend-close-btn" class="btn btn-dark" type="button">Fermer</button>
+</dialog>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -109,18 +109,6 @@ main {
   pointer-events: none;
 }
 
-select {
-  font-family: inherit;
-  font-size: 14px;
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--bg-panel);
-  color: var(--text-dark);
-  margin-bottom: 18px;
-  display: block;
-}
-
 .btn {
   font-family: inherit;
   font-size: 15px;

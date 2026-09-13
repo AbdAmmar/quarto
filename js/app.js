@@ -21,8 +21,8 @@ const setupScreen = document.getElementById('setup-screen');
 const gameScreen = document.getElementById('game-screen');
 const modeToggle = document.getElementById('mode-toggle');
 const firstToggle = document.getElementById('first-toggle');
+const difficultyToggle = document.getElementById('difficulty-toggle');
 const computerOptions = document.getElementById('computer-options');
-const difficultySelect = document.getElementById('difficulty-select');
 const startBtn = document.getElementById('start-btn');
 
 const statusBadge = document.getElementById('status-badge');
@@ -67,6 +67,7 @@ let computerPlayer = 1;
 let thinking = false;
 let mode = 'two_players';
 let firstChoice = 'human';
+let difficulty = 'Medium';
 
 const worker = new Worker('js/worker.js', { type: 'module' });
 let pendingResolve = null;
@@ -98,6 +99,10 @@ setupSegmented(firstToggle, (value) => {
   firstChoice = value;
 });
 
+setupSegmented(difficultyToggle, (value) => {
+  difficulty = value;
+});
+
 startBtn.addEventListener('click', startGame);
 newGameBtn.addEventListener('click', backToMenu);
 infoBtn.addEventListener('click', () => legendDialog.showModal());
@@ -124,8 +129,8 @@ function backToMenu() {
 
 // ---------------------------------------------------------------- drawing
 function playerName(p) {
-  if (vsComputer) return p === humanPlayer ? 'Vous' : "L'ordinateur";
-  return `Joueur ${p + 1}`;
+  if (vsComputer) return p === humanPlayer ? 'You' : 'Computer';
+  return `Player ${p + 1}`;
 }
 
 function render() {
@@ -203,10 +208,10 @@ function drawPool() {
 function updateStatus() {
   if (state.phase === 'over') {
     if (state.winner === 'draw') {
-      statusBadge.textContent = 'Match nul !';
+      statusBadge.textContent = "It's a draw!";
       statusBadge.style.background = theme.neutral;
     } else {
-      statusBadge.textContent = `${playerName(state.winner)} gagne !`;
+      statusBadge.textContent = `${playerName(state.winner)} wins!`;
       statusBadge.style.background = theme.success;
     }
     return;
@@ -214,9 +219,9 @@ function updateStatus() {
   const actor = playerName(state.currentPlayer);
   if (state.phase === 'select') {
     const other = playerName(1 - state.currentPlayer);
-    statusBadge.textContent = `${actor} : choisissez une pièce à donner à ${other}`;
+    statusBadge.textContent = `${actor}: choose a piece to give to ${other}`;
   } else {
-    statusBadge.textContent = `${actor} : posez la pièce`;
+    statusBadge.textContent = `${actor}: place the piece`;
   }
   statusBadge.style.background = theme.accent;
 }
@@ -272,8 +277,8 @@ function maybeTriggerComputer() {
   if (state.currentPlayer !== computerPlayer) return;
 
   thinking = true;
-  thinkLabel.textContent = "L'ordinateur réfléchit...";
-  const settings = DIFFICULTIES[difficultySelect.value];
+  thinkLabel.textContent = 'Computer is thinking...';
+  const settings = DIFFICULTIES[difficulty];
 
   pendingResolve = (action) => {
     thinking = false;
@@ -295,10 +300,10 @@ function maybeTriggerComputer() {
 // ---------------------------------------------------------------- legend
 function drawLegend() {
   const rows = [
-    [0b0000, 0b0001, 'Petite', 'Grande'],
-    [0b0000, 0b0010, 'Claire', 'Foncée'],
-    [0b0000, 0b0100, 'Carrée', 'Ronde'],
-    [0b0000, 0b1000, 'Pleine', 'Creuse'],
+    [0b0000, 0b0001, 'Short', 'Tall'],
+    [0b0000, 0b0010, 'Light', 'Dark'],
+    [0b0000, 0b0100, 'Square', 'Round'],
+    [0b0000, 0b1000, 'Solid', 'Hollow'],
   ];
   const rowH = 46;
   legendCanvas.width = 220;
